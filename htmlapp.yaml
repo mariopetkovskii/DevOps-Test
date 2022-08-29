@@ -1,0 +1,37 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: basic-app
+  namespace: default
+  labels:
+    app: basic-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basic-app
+  template:
+    metadata:
+      labels:
+        app:basic-app
+    spec:
+      containers:
+      - name: basic-app
+        image: "mariopetkovski/testhtml"
+        ports:
+          - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: basic-app
+  namespace: default
+spec:
+  selector:
+    app: basic-app
+  type: LoadBalancer
+  ports:
+  - name: http
+    targetPort: 3000
+    port: 80
